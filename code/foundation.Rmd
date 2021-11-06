@@ -18,7 +18,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # リンク集
 
- <!-- - [enecast](https://enecast.dip.jp/) -->
  
  - [気象庁HP](https://www.jma.go.jp/jma/index.html)
  
