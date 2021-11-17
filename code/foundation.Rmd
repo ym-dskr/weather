@@ -74,7 +74,78 @@ knitr::opts_chunk$set(echo = TRUE)
            - 最近の改善のまとめ（ 230 KB ）
            - プロダクトの物理量の仕様及び算出方法（ 230 KB ）
            - 表記と統計的検証に用いる代表的な指標（ 1.0 MB ）  
-           
+
+
+# 気象官署
+
+```{r, echo=F, message=F, warning=F, fig.width=8}
+library(tidyverse)
+library(leaflet)
+library(leaflet.extras)
+
+kansho <- read_csv("../input/kansho_r.csv")
+
+map <- leaflet() %>% addTiles(group="OSM") %>%
+   addTiles(urlTemplate = "http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga",
+            attribution = 'Google', group = "Google") %>%
+   addProviderTiles("Esri.WorldImagery", group = "Image") %>%
+  addLayersControl(baseGroups=c("Image", "OSM", "Google"), options=layersControlOptions(collapsed = FALSE)) %>%
+  addScaleBar(position="bottomleft")%>%
+  addMeasure(position = "topright", primaryLengthUnit = "meters",
+             primaryAreaUnit = "sqmeters", activeColor = "#3D535D",
+             completedColor = "#7D4479") %>%
+  addMiniMap(position="bottomright") %>%
+  addResetMapButton() %>%
+  addSearchOSM() 
+
+
+getColor <- function(kansho) {
+  sapply(kansho$区分, function(区分) {
+  if(区分 == "気象庁") {
+    "red"
+  } else if(区分 == "施設等機関"){
+    "blue"
+  } else if(区分 == "管区気象台等"){
+    "green"
+  } else if(区分 == "測候所"){
+    "orange"
+  } else if(区分 == "航空測候所"){
+    "purple"
+  }
+     
+    })
+}
+
+
+icons_wf <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = getColor(kansho) %>% as.character()
+)
+
+map_wf <- map %>% 
+  addAwesomeMarkers(lng = as.numeric(kansho$lng),
+                    lat = as.numeric(kansho$lat),
+                    label = paste0('<strong>', "官署地点", '</strong>', "<br>",
+                                   '<strong>', "官署名 : ", kansho$気象官署名, '</strong>', "<br>",
+                                   '<strong>', "住所 : ", kansho$所在地等, '</strong>', "<br>",
+                                   '<strong>', "区分 :", kansho$区分, '</strong>', "<br>"
+                                   ) %>%
+                    lapply(htmltools::HTML),
+                    # popup = paste0('<strong>', "備考・リンク : ", paste0("<a href =", "'",
+                    #                                                  detail_shogen$関連リンク,
+                    #                                                  "'", "target = '_blank'", ">",
+                    #                                                  detail_shogen$備考, 
+                    #                                                  "</a>"),'</strong>', "<br>"),
+                    layerId = kansho$気象官署名,
+                    icon = icons_wf
+             ) 
+
+map_wf
+
+```
+
            
            
 
