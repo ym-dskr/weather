@@ -78,7 +78,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # 気象官署
 
-```{r, echo=F, message=F, warning=F, fig.width=8}
+```{r, echo=F, message=F, warning=F, fig.width=8, out.width="100%"}
 library(tidyverse)
 library(leaflet)
 library(leaflet.extras)
@@ -333,6 +333,23 @@ map_wf
 
  - 気象庁システムの障害等により初期時刻から２時間以内に配信ができない場合は、当該時刻の配信資料の提供を中止することがある。
  - データサイズが非常に大きいため、受信するための回線は30MBbps以上の回線を推奨。
+
+# 気象実績
+
+## アメダスデータ
+
+ - [アメダスデータの概要と特徴・データ形式](https://www.wxbc.jp/wp-content/uploads/2018/07/seminar_180706_03.pdf)
+ 
+<div align="center">
+<img src="../images/amedas_outline1.png" width="90%">
+<img src="../images/amedas_outline2.png" width="90%">
+<img src="../images/amedas_outline3.png" width="90%">
+<img src="../images/amedas_data1.png" width="90%">
+<img src="../images/amedas_data2.png" width="90%">
+<img src="../images/amedas_data3.png" width="90%">
+<img src="../images/amedas_data4.png" width="90%">
+<img src="../images/amedas_data5.png" width="90%">
+</div>
 
 
 # データの入手方法
